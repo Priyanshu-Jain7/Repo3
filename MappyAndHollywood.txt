@@ -1,0 +1,612 @@
+//header files
+#include <cstdlib>
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+#include <stdio.h>
+#include <windows.h>
+#include <string>
+#include <vector>
+#include <bits/stdc++.h>
+#include <dos.h>
+#include <windows.h>
+using namespace std;
+
+class node
+{
+public:
+    char key;
+    node *left;
+    node *right;
+    int height;
+};
+
+int height(node *n)
+{
+    if (n == NULL)
+    {
+        return 0;
+    }
+    return n->height;
+}
+int max(int a, int b)
+{
+    return (a > b) ? a : b;
+}
+node *newNode(char item)
+{
+    node *temp = new node;
+    temp->key = item;
+    temp->left = temp->right = NULL;
+    temp->height = 1;
+    return temp;
+}
+//right rotate
+node *rightRotate(node *y)
+{
+    node *x = y->left;
+    node *t2 = x->right;
+    x->right = y;
+    y->left = t2;
+    y->height = max(height(y->left), height(y->right)) + 1;
+    x->height = max(height(x->left), height(x->right)) + 1;
+    return x;
+}
+
+//left rotate
+node *leftRotate(node *x)
+{
+
+   node *y = x->right;
+    node *t2 = y->left;
+    y->left = x;
+    x->right = t2;
+    x->height = max(height(x->left), height(x->right)) + 1;
+    y->height = max(height(y->left), height(y->right)) + 1;
+    return y;
+}
+int getBalance(node *n)
+{
+    if (n == NULL)
+    {
+        return 0;
+    }
+    return height(n->left) - height(n->right);
+}
+node *insert(node *node, char key)
+{
+    if (node == NULL){
+        return newNode(key);
+    }
+    if (key < node->key){
+        node->left = insert(node->left, key);
+    }
+    else if (key > node->key){
+        node->right = insert(node->right, key);
+    }
+    return node;
+    node->height = 1 + max(height(node->left),
+                           height(node->right));
+
+    int balance = getBalance(node);
+    if (balance > 1 && key < node->left->key){
+        return rightRotate(node);
+    }
+    if (balance < -1 && key > node->right->key){
+        return leftRotate(node);
+    }
+    if (balance > 1 && key > node->left->key)
+    {
+        node->left = leftRotate(node->left);
+        return rightRotate(node);
+    }
+    if (balance < -1 && key < node->right->key)
+    {
+        node->right = rightRotate(node->right);
+        return leftRotate(node);
+    }
+    return node;
+}
+int search(node *root, char key)
+{
+    while (root->key != key)
+    {
+        if (root != NULL)
+        {
+            if (root->key > key)
+            {
+                root = root->left;
+            }
+            else
+            {
+                root = root->right;
+            }
+            if (root == NULL)
+            {
+                return -1;
+            }
+        }
+    }
+    return 1;
+}
+void SetColor(int ForgC)
+{
+    WORD wColor;
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    if (GetConsoleScreenBufferInfo(hStdOut, &csbi))
+    {
+        wColor = (csbi.wAttributes & 0xF0) + (ForgC & 0x0F);
+        SetConsoleTextAttribute(hStdOut, wColor);
+    }
+    return;
+}
+void ClearConsoleToColors(int ForgC, int BackC)
+{
+    WORD wColor = ((BackC & 0x0F) << 4) + (ForgC & 0x0F);
+    HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD coord = {0, 0};
+    DWORD count;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    SetConsoleTextAttribute(hStdOut, wColor);
+    if (GetConsoleScreenBufferInfo(hStdOut, &csbi))
+    {
+        FillConsoleOutputCharacter(hStdOut, (TCHAR)32, csbi.dwSize.X * csbi.dwSize.Y, coord, &count);
+        FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, csbi.dwSize.X * csbi.dwSize.Y, coord, &count);
+        SetConsoleCursorPosition(hStdOut, coord);
+    }
+    return;
+}
+void delay(unsigned int mseconds)
+{
+    clock_t goal = mseconds + clock();
+    while (goal > clock()) ;
+}
+void bollywood()
+{
+    string q = "WELCOME TO HOLLYWOOD";
+    for (int i = 0; i < q.size(); i++)
+    {
+        cout << q[i];
+        delay(120);
+    }
+    cout << endl
+         << endl;
+    char z;
+    cout << "This is the conventional movie guessing game in which one is asked to correctly guess each letter one at a time. If the letter occurs in movie name, the character is displayed, or else the chance is cut and in this way if you are void of remaining chances, game is over." << endl
+         << endl;
+    cout << "Press any letter to continue : ";
+    cin >> z;
+
+    system("cls");
+    char a[][100] =
+        {
+            "TITANIC",
+            "FORREST GUMP",
+            "NO TIME TO DIE",
+            "A STAR IS BORN",
+            "LIFE IS BEAUTIFUL",
+            "THE MATRIX",
+            "THE SOUND OF MUSIC",
+            "VERTIGO",
+            "BRAVEHEART",
+            "TOY STORY",
+            "CHINA TOWN",
+            "PSYCHO",
+            "THOR",
+            "CASABLANCA",
+            "GONE WITH THE WIND",
+            "BACK TO THE FUTURE",
+            "THE GODFATHER",
+            "FIRST MAN",
+            "PULP FICTION",
+            "TAXI DRIVER",
+            "A CLOCKWORK ORANGE",
+            "THERE WILL BE BLOOD",
+            "RESERVOIR DOGS",
+            "CITIZEN CANE",
+            "FIGHT CLUB",
+            "BLADE RUNNER",
+            "THE SHINING",
+            "A SPACE ODYSSEY",
+            "SAVING PRIVATE RYAN",
+            "THE USUAL SUSPECTS"
+            };
+    srand(time(NULL));
+    int x = rand() % 30;
+    // cout<<x<<endl;
+    string s = a[x];
+    // cout<<s<<endl;
+    node *root = NULL;
+    root = insert(root, s[0]);
+    for (int i = 1; i < s.size(); i++)
+    {
+        if (s[i] != ' ')
+            insert(root, s[i]);
+    }
+    // cout<<search(root,'M')<<endl;
+    // cout<<search(root,'L')<<endl;
+    string s3 = "hollywood";
+    string s2; // displaying string to user
+    string s4; // wrong inputs by user
+    int count = 9;
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == ' ')
+            s2.push_back('/');
+        else
+            s2.push_back('*');
+    }
+    for (int i = 0; i < s.size(); i++)
+    {
+        if (s[i] == 'A')
+            s2[i] = 'A';
+        if (s[i] == 'E')
+            s2[i] = 'E';
+        if (s[i] == 'I')
+            s2[i] = 'I';
+        if (s[i] == 'O')
+            s2[i] = 'O';
+        if (s[i] == 'U')
+            s2[i] = 'U';
+    }
+    cout << "Your movie is" << endl;
+    cout << s2 << endl;
+    while (1)
+    {
+        fflush(stdin);
+        char ch;
+        cout << "Enter a character to find : ";
+        cin >> ch;
+        ch = toupper(ch);
+        if (search(root, ch) == -1)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                if (s3[j] != '*')
+                {
+                    s3[j] = '*';
+                    break;
+                }
+            }
+
+            s4.push_back(ch);
+            cout << "Sorry the character was not present in the string" << endl;
+            cout << "Characters left : " << s3 << endl;
+            cout << "Wrong Entries : " << s4 << endl;
+            cout << "Film Status: " << s2 << endl;
+            count--;
+            cout << endl;
+        }
+        else
+        {
+            for (int i = 0; i < s.size(); i++)
+            {
+                if (s[i] == ch)
+                {
+                    s2[i] = ch;
+                }
+            }
+            cout << "Character found!!" << endl;
+            cout << "Characters left : " << s3 << endl;
+            cout << "Wrong Entries : " << s4 << endl;
+            cout << "Film Status: " << s2 << endl;
+            cout << endl;
+        }
+
+        if (count == 0)
+        {
+            cout << "Sorry! You ran out of chances" << endl;
+            cout << "Movie was: " << s << endl;
+            break;
+        }
+
+        if (find(s2.begin(), s2.end(), '*') == s2.end())
+        {
+            cout << "Congrats!!" << endl;
+            cout << "You guessed it right" << endl;
+            cout << "The film was : " << s << endl;
+            break;
+        }
+    }
+    delay(5000);
+    free(root);
+}
+//---------------------------------------------------------------------------------------------------------------------
+//Mappy game
+char arr1[18][64];
+char arr2[18][64] = {
+    "***************************************************************",
+    "|    |        |      |        |                  |            |",
+    "|       | |               |        |     |              |  |  |",
+    "|** *********** **   *****************************************|",
+    "|   |                             |                  |  |     |",
+    "| | |*** |  |       |   |     ***    |          |       | *** |",
+    "| |      |  | |***  |   |  |    *  | ***  *** | ** ***| |  |  |",
+    "| | *****|  | |      ** |       *  |          |              *|",
+    "| |           |***  |      | ** *  |   ***    ********  ****  |",
+    "| |***** ***         **         |    |   | **                 |",
+    "|      |   ******  ******* ***  |    |   |   | **| | **** | **|",
+    "|   |         |              ***  *  **    *    |         |   |",
+    "|* *** ****  |  |_ *** ******     *     | ** *  | *** | |     |",
+    "|   |  *   *   |                   ***    |  * *  |   |  **** |",
+    "|   |    *        ******* | *** |                   |         |",
+    "| ********* *****         |     |  ******  ****** ** ***** ** |",
+    "|      |                  |    | |              |        |    |",
+    "***************************************************************"};
+void display_arr2()
+{
+    for (int i = 0; i < 18; i++)
+    {
+        cout << arr2[i] << endl;
+    }
+}
+void gotoxy(int x, int y) // this function sends cursor on the desired place on the console
+{
+    HANDLE hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD position = {x, y};
+    SetConsoleCursorPosition(hStdout, position);
+}
+class mapy
+{
+private:
+    int x;
+    int y;
+public:
+    mapy(int x, int y)
+    {
+        this->x = x;
+        this->y = y;
+    }
+    void movee_x(int p)
+    {
+        if (arr2[y][x + p] == ' ')
+            x += p;
+    }
+    void movee_y(int p)
+    {
+        if (arr2[y + p][x] == ' ')
+            y += p;
+    }
+    void movee(int p, int q)
+    {
+        x += p;
+        y += q;
+    }
+    int get_x()
+    {
+        return x;
+    }
+    int get_y()
+    {
+        return y;
+    }
+    void draw(char p)
+    {
+       arr2[x][y] = p;
+        gotoxy(x, y);
+        cout << p;
+    }
+};
+struct w
+{
+    int w_count;
+    int x;
+    int y;
+    int backk;
+};
+struct t1
+{
+    int x;
+    int y;
+};
+vector<t1> w_q;
+vector<w> s;
+void add(int x, int y, int wc, int backk)
+{
+    if (arr1[y][x] == ' ' || arr1[y][x] == '.')
+    {
+        arr1[y][x] = '*';
+        w tmp;
+        tmp.x = x;
+        tmp.y = y;
+        tmp.w_count = wc;
+        tmp.backk = backk;
+        s.push_back(tmp);
+    }
+}
+void find_user(int sx, int sy, int x, int y)
+{
+    memcpy(arr1, arr2, sizeof(arr2));
+    s.clear();
+    w tmp; //
+    tmp.x = sx;
+    tmp.y = sy;
+    tmp.w_count = 0;
+    tmp.backk = -1;
+
+    s.push_back(tmp);
+    int i = 0;
+    while (i < s.size())
+    {
+        if (s[i].x == x && s[i].y == y)
+        {
+            w_q.clear();
+            t1 tmp2;
+            while (s[i].w_count != 0)
+            {
+                tmp2.x = s[i].x;
+                tmp2.y = s[i].y;
+                w_q.push_back(tmp2);
+                i = s[i].backk;
+            }
+            break;
+        }
+        add(s[i].x + 1, s[i].y, s[i].w_count + 1, i);
+        add(s[i].x - 1, s[i].y, s[i].w_count + 1, i);
+        add(s[i].x, s[i].y + 1, s[i].w_count + 1, i);
+        add(s[i].x, s[i].y - 1, s[i].w_count + 1, i);
+        i++;
+    }
+    s.clear();
+}
+int mappy()
+{
+    bool running = true;
+    int x = 15; // hero x
+    int y = 16; // hero y
+    int old_x;
+
+    int old_y;
+    int ex = 1;
+    int ey = 1;
+    int pts = 0;
+    int a = 40, b = 5;
+    gotoxy(a, b);
+    cout << "\t\tMAPPY\n\n\n";
+    cout << ("\t\t\tGAME INSTRUCTIONS:\n\n\n");
+    cout << ("\t\t\t1. USE KEYS TO MOVE \n\t\t\t2.");
+    cout << (" COLLECT DOTS TO EARN BONUS\n\t\t\t3. ESCAPE FROM THE SLAYER\n\n");
+    cout << ("\t\t\tH -> LEGEND\n\t\t\tN -> MEDIUM\n\t\t\tE -> EASY\n\n\t\t\tPRESS BUTTON TO START : ");
+    char dd;
+    int speed = 3;
+    cin >> dd;
+    if (dd == 'N')
+    {
+        speed = 2;
+    }
+    else if (dd == 'H')
+    {
+        speed = 1;
+    }
+    system("cls");
+    display_arr2();
+    gotoxy(x, y);
+    cout << "P";
+    int frame = 0;
+    find_user(ex, ey, x, y);
+
+    while (running)
+    {
+        gotoxy(x, y);
+        cout << " ";
+        old_x = x;
+        old_y = y;
+        if (GetAsyncKeyState(VK_UP))
+        {
+            if (arr2[y - 1][x] == '.')
+            {
+                y--;
+                pts++;
+            }
+            else if (arr2[y - 1][x] == ' ')
+                y--;
+        }
+        if (GetAsyncKeyState(VK_DOWN))
+        {
+            if (arr2[y + 1][x] == '.')
+            {
+                y++;
+                pts++;
+            }
+            else if (arr2[y + 1][x] == ' ')
+                y++;
+        }
+        if (GetAsyncKeyState(VK_LEFT))
+        {
+            if (arr2[y][x - 1] == '.')
+            {
+                x--;
+
+                pts++;
+            }
+            else if (arr2[y][x - 1] == ' ')
+                x--;
+        }
+        if (GetAsyncKeyState(VK_RIGHT))
+        {
+            if (arr2[y][x + 1] == '.')
+            {
+                x++;
+                pts++;
+            }
+            else if (arr2[y][x + 1] == ' ')
+                x++;
+        }
+        if (old_x != x || old_y != y)
+        {
+            find_user(ex, ey, x, y);
+        }
+        gotoxy(x, y);
+        cout << "P";
+        arr2[ey][ex] = '.';
+        gotoxy(ex, ey);
+        cout << ".";
+        if (frame % speed == 0 && w_q.size() != 0)
+        {
+            ex = w_q.back().x;
+            ey = w_q.back().y;
+            w_q.pop_back();
+        }
+        gotoxy(ex, ey);
+        cout << "E";
+        if (ex == x && ey == y)
+        {
+            break;
+        }
+        gotoxy(64, 18);
+        gotoxy(64, 1);
+        cout << pts;
+        Sleep(100);
+        frame++;
+    }
+    system("cls");
+    cout << "YOU LOST\nYOUR SCORE IS: " << pts;
+    for (int i = 0; i < 2; i++)
+        cin.get();
+    return 0;
+}
+int main()
+{
+    ClearConsoleToColors(0, 15);
+    do
+    {
+        system("cls");
+        SetColor(6);
+        string q = "\t\t\tWELCOME TO GAMING ARENA";
+        for (int i = 0; i < q.size(); i++)
+        {
+            cout << q[i];
+            delay(120);
+        }
+        cout << endl;
+        SetColor(1);
+        cout << "\t\t\t1. Hollywood\n\t\t\t2. Mappy\n\t\t\t3. Exit\n";
+        int choice;
+        cout << "\t\t\tEnter your choice: ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+        {
+            system("cls");
+            bollywood();
+            break;
+        }
+        case 2:
+        {
+            system("cls");
+            mappy();
+            break;
+        }
+        case 3:
+        {
+            system("cls");
+            exit(0);
+        }
+        default:
+            break;
+        }
+    } while (1);
+    return 0;
+}
