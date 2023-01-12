@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<style>
+
+#fname {
+font-size: 35px;
+  background-colour: blue;
+}
+
+
+input[type=text], select {
+  width: 60%;
+  padding: 12px 2px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 60px;
+  box-sizing: border-box;
+}
+
+#u {
+  width: 20%;
+  background-color: #a9a9a9	;
+  color: white;
+  padding: 10px 20px;
+  margin: 43px 0;
+  border-style:solid ;
+  border-colour:grey ;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+input[type=submit]:hover {
+  background-color: #45a049;
+}
+
+
+</style>
+
+
+<body background="https://unbounce.com/photos/Gradient-Background.png">
+<h2 style="text-align:center">NGOs</h2>
+
+
+
+  <form style="text-align:center;"  action="/action_page.php">
+    <label for="location" id="fname">Location</label><br>
+    <input type="text" id="location" name="location" placeholder="enter location" style="text-align:center;"><br>
+    
+    <button id="u" type="submit">Search</button>
+    <script>
+        document.getElementById("u").addEventListener("c", redirectFunction);
+        function redirectFunction(){
+            window.location.href = "w3schools.com";
+        }
+        </script>
+  </form>
+
+</body>
+</html>
+
+
